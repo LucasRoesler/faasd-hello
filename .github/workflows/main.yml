@@ -12,11 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Pull template
-        uses: ./.github/actions/faas-cli
+        uses: docker://openfaas/faas-cli:latest-root
         with:
           args: template store pull golang-http
       - name: Run shrinkwrap build
-        uses: ./.github/actions/faas-cli
+        uses: docker://openfaas/faas-cli:latest-root
         with:
           args: build -f faasd-hello.yml --shrinkwrap
       - name: Set up QEMU
@@ -41,7 +41,7 @@ jobs:
           push: false
           tags: theaxer/faasd-hello:latest
       - name: Login to OpenFaaS Gateway
-        uses: ./.github/actions/faas-cli
+        uses: docker://openfaas/faas-cli:latest-root
         with:
           args: login -p ${{ secrets.OPENFAAS_GATEWAY_PASSWD }} -g ${{ secrets.OPENFAAS_GATEWAY }}
       - name: List dir contents
