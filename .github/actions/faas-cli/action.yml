@@ -1,0 +1,14 @@
+name: 'OpenFaaS Actions'
+description: 'Setup Github Actions with faas-cli'
+branding:
+  icon: 'play'
+  color: 'gray-dark'
+inputs:
+  args:
+    description: 'Arguments passed to faas-cli'
+    default: 'version'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
