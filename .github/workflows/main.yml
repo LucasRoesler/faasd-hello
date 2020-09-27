@@ -7,24 +7,18 @@ on:
 
 jobs:
   func-build:
-    container:
-      image: openfaas/faas-cli:latest-root
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: Pull template
-      #   uses: ./.github/actions/faas-cli
-      #   with:
-      #     args: template store pull golang-http
       - name: Pull template
-        run: faas-cli template store pull golang-http
-      # - name: Run shrinkwrap build
-      #   uses: ./.github/actions/faas-cli
-      #   with:
-      #     args: build -f faasd-hello.yml --shrinkwrap
+        uses: ./.github/actions/faas-cli
+        with:
+          args: template store pull golang-http
       - name: Run shrinkwrap build
-        run: faas-cli build -f faasd-hello.yml --shrinkwrap
+        uses: ./.github/actions/faas-cli
+        with:
+          args: build -f faasd-hello.yml --shrinkwrap
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -37,6 +31,8 @@ jobs:
       #   with:
       #     username: ${{ secrets.DOCKER_USERNAME }}
       #     password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Change dir permissions
+        run: sudo chown $USER:$USER -R build/
       - name: Build and Push the OpenFaaS function
         uses: docker/build-push-action@v2
         with:
