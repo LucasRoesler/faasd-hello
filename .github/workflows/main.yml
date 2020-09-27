@@ -8,19 +8,23 @@ on:
 jobs:
   func-build:
     container:
-      options: --user root
+      image: openfaas/faas-cli:latest-root
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      # - name: Pull template
+      #   uses: ./.github/actions/faas-cli
+      #   with:
+      #     args: template store pull golang-http
       - name: Pull template
-        uses: ./.github/actions/faas-cli
-        with:
-          args: template store pull golang-http
+        run: faas-cli template store pull golang-http
+      # - name: Run shrinkwrap build
+      #   uses: ./.github/actions/faas-cli
+      #   with:
+      #     args: build -f faasd-hello.yml --shrinkwrap
       - name: Run shrinkwrap build
-        uses: ./.github/actions/faas-cli
-        with:
-          args: build -f faasd-hello.yml --shrinkwrap
+        run: faas-cli build -f faasd-hello.yml --shrinkwrap
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
